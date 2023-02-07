@@ -1,0 +1,50 @@
+userinfo = f'({unreserved}|{pct_encoded}|{sub_delims}|:)*'
+uri_reference = f'({uri}|{relative_ref})'
+uri = f'{scheme}:{hier_part}(\\?{query})?(\\#{fragment})?'
+unreserved = '[a-zA-Z0-9\\-._~]'
+sub_delims = "[!$&'()*+,;=]"
+segment_nz_nc = f'({unreserved}|{pct_encoded}|{sub_delims}|@)+'
+segment_nz = f'({pchar})+'
+segment = f'({pchar})*'
+scheme = '[a-zA-Z][a-zA-Z0-9+\\-.]*'
+reserved = f'({gen_delims}|{sub_delims})'
+relative_ref = f'{relative_part}(\\?{query})?(\\#{fragment})?'
+relative_part = (
+    f'(//{authority}{path_abempty}|{path_absolute}|'
+    f'{path_noscheme}|{path_empty})'
+)
+reg_name = f'({unreserved}|{pct_encoded}|{sub_delims})*'
+query = f'({pchar}|[/?])*'
+port = '[0-9]*'
+pct_encoded = '%[0-9A-Fa-f][0-9A-Fa-f]'
+pchar = f'({unreserved}|{pct_encoded}|{sub_delims}|[:@])'
+path_rootless = f'{segment_nz}(/{segment})*'
+path_noscheme = f'{segment_nz_nc}(/{segment})*'
+path_empty = f'({pchar}){{0}}'
+path_absolute = f'/({segment_nz}(/{segment})*)?'
+path_abempty = f'(/{segment})*'
+path = (
+    f'({path_abempty}|{path_absolute}|{path_noscheme}|{path_rootless}|'
+    f'{path_empty})'
+)
+ls32 = f'({h16}:{h16}|{ipv4address})'
+ipvfuture = f'[vV][0-9A-Fa-f]+\\.({unreserved}|{sub_delims}|:)+'
+ipv6address = (
+    f'(({h16}:){{6}}{ls32}|::({h16}:){{5}}{ls32}|({h16})?::({h16}:){{4}}'
+    f'{ls32}|(({h16}:)?{h16})?::({h16}:){{3}}{ls32}|(({h16}:){{2}}{h16})?::'
+    f'({h16}:){{2}}{ls32}|(({h16}:){{3}}{h16})?::{h16}:{ls32}|(({h16}:){{4}}'
+    f'{h16})?::{ls32}|(({h16}:){{5}}{h16})?::{h16}|(({h16}:){{6}}{h16})?::)'
+)
+ipv4address = f'{dec_octet}\\.{dec_octet}\\.{dec_octet}\\.{dec_octet}'
+ip_literal = f'\\[({ipv6address}|{ipvfuture})\\]'
+host = f'({ip_literal}|{ipv4address}|{reg_name})'
+hier_part = (
+    f'(//{authority}{path_abempty}|{path_absolute}|{path_rootless}|'
+    f'{path_empty})'
+)
+h16 = '[0-9A-Fa-f]{1,4}'
+gen_delims = '[:/?#\\[\\]@]'
+fragment = f'({pchar}|[/?])*'
+dec_octet = '(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])'
+authority = f'({userinfo}@)?{host}(:{port})?'
+absolute_uri = f'{scheme}:{hier_part}(\\?{query})?'

@@ -1,0 +1,2 @@
+a = ALPHA / DIGIT
+b = *a

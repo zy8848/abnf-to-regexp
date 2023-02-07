@@ -1,0 +1,3 @@
+comment = ";" *(WSP / VCHAR) CRLF
+c-nl = comment / CRLF
+c-wsp = WSP / (c-nl WSP)

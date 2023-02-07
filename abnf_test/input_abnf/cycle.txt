@@ -1,0 +1,8 @@
+b = *a
+a = ALPHA / DIGIT / c
+c = ALPHA / b / f
+f = *DIGIT
+d = *ALPHA
+
+
+
