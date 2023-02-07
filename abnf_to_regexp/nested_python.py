@@ -140,11 +140,11 @@ def _topological_sort(
     temporary_marks = sortedcontainers.SortedSet()  # Set[str]
 
     visited_more_than_once = None  # type: Optional[str]
-
+    loop_nodes = sortedcontainers.SortedSet()
     def visit(an_identifier: str) -> None:
         nonlocal visited_more_than_once
         nonlocal trace
-
+        nonlocal loop_nodes
         if visited_more_than_once:
             return
 
@@ -153,11 +153,17 @@ def _topological_sort(
 
         if an_identifier in temporary_marks:
             visited_more_than_once = an_identifier
+            loop_nodes.update(temporary_marks)
+            print(f"Find Cycle: {list(loop_nodes)}")
+            visited_more_than_once = None # reset this after find a cycle
             return
 
         temporary_marks.add(an_identifier)
 
         for reference in graph[an_identifier]:
+            if reference in loop_nodes: # if mext node is in cycle
+                loop_nodes.update(temporary_marks)
+                print(f"Find Cycle Dependence: {list(temporary_marks)} -> {reference}, {reference} is in loop" )
             visit(reference)
 
         temporary_marks.remove(an_identifier)
@@ -165,12 +171,13 @@ def _topological_sort(
         identifiers_without_permanent_marks.remove(an_identifier)
         trace.insert(0, an_identifier)
 
-    while len(identifiers_without_permanent_marks) > 0 and not visited_more_than_once:
+    
+    while len(identifiers_without_permanent_marks) > 0:
         visit(identifiers_without_permanent_marks[0])
 
-    if visited_more_than_once:
-        return None, visited_more_than_once
 
+    trace = trace - loop_nodes
+    
     return trace, None
 
 
