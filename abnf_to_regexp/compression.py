@@ -103,6 +103,6 @@ def compress(element: Element) -> Element:
     """Apply multiple compressions to the element to obtain a more readable regexp."""
     element = _MergeAlternationsOfCharacterClasses().transform(element)
     element = _MergeAlternations().transform(element)
-    element = _SingleLetterCaseInsensitiveToRange().transform(element)
+    # element = _SingleLetterCaseInsensitiveToRange().transform(element)
 
     return element
