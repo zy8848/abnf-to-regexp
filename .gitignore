@@ -130,3 +130,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+venv3/
+rfc*.py
+abnf_test/*
+test_data/*
+.vscode/launch.json
