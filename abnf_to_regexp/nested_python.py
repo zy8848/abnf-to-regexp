@@ -175,9 +175,18 @@ def _topological_sort(
     while len(identifiers_without_permanent_marks) > 0:
         visit(identifiers_without_permanent_marks[0])
 
+    # 删除trace中的每一个在loop中的node
+    new_trace = []
 
-    trace = trace - loop_nodes
-    
+    # 遍历trace中的每个元素
+    for item in trace:
+        # 如果元素不在loop_nodes中，将其添加到new_trace中
+        if item not in loop_nodes:
+            new_trace.append(item)
+
+    # 将new_trace赋值给trace，以更新trace列表
+    trace = new_trace
+
     return trace, None
 
 
